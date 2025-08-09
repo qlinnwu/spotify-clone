@@ -1,7 +1,7 @@
-// import { useAuth } from "@clerk/clerk-react";
 import { axiosInstance } from "@/lib/axios";
-import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
 import { Loader } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const updateApiToken = (token: string | null) => {
   if (token) {
@@ -12,24 +12,24 @@ const updateApiToken = (token: string | null) => {
 };
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // const { getToken } = useAuth(); // from clerk
+  const { getToken } = useAuth();
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const initAuth = async () => {
-  //     try {
-  //       const token = await getToken();
-  //       updateApiToken(token);
-  //     } catch (error: any) {
-  //       updateApiToken(null);
-  //       console.log("Error in auth provider", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        const token = await getToken();
+        updateApiToken(token);
+      } catch (error: any) {
+        updateApiToken(null);
+        console.log("Error in auth provider", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   initAuth();
-  // }, [getToken]);
+    initAuth();
+  }, [getToken]);
 
   if (loading)
     return (
